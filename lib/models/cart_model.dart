@@ -55,6 +55,27 @@ class CartModel extends Model{
     this.discountPercentage = discountPercentage;
   }
 
+  void updatePrices(){
+    notifyListeners();
+  }
+
+  double getProductsPrice(){
+    double price = 0.0;
+    for(CartProduct c in products){
+      if(c.productData != null)
+        price += c.quantity * c.productData.price;
+    }
+    return price;
+  }
+
+  double getDiscount(){
+    return getProductsPrice() * discountPercentage/100;
+  }
+
+  double getShipPrice(){
+    return 9.99;
+  }
+
   void _loadCartItems() async {
     QuerySnapshot query = await Firestore.instance.collection("users").document(user.firebaseUser.uid).collection("cart")
         .getDocuments();
