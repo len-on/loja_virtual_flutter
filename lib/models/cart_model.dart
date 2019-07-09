@@ -8,6 +8,8 @@ class CartModel extends Model{
   UserModel user;
   List<CartProduct> products = [];
   bool isLoading = false;
+  String couponCode;
+  int discountPercentage = 0;
 
   CartModel(this.user){
     if(user.isLoggedIn())
@@ -46,6 +48,11 @@ class CartModel extends Model{
         .document(cartProduct.cartID).updateData(cartProduct.toMap());
 
     notifyListeners();
+  }
+
+  void setCoupon(String couponCode, int discountPercentage){
+    this.couponCode = couponCode;
+    this.discountPercentage = discountPercentage;
   }
 
   void _loadCartItems() async {
